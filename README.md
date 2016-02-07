@@ -1,1 +1,1 @@
-# K-R
+# K&R exercises
