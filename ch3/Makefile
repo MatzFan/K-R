@@ -1,6 +1,6 @@
 CFLAGS=-Wall -g
 
-all: binsearch
+all: binsearch characterize
 
 clean:
-	rm -rf binsearch
+	rm -rf binsearch characterize
