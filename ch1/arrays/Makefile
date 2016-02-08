@@ -1,6 +1,6 @@
 CFLAGS=-Wall -g
 
-all: array
+all: array longestline quine
 
 clean:
-	rm -rf array
+	rm -rf array longestline quine
