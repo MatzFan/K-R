@@ -17,7 +17,7 @@ int main()
             copy(longest, line); // store longest line
         }
     if(max > 0) // zero output if no input :)
-        printf("\n%d %s", max, longest); // %s MUST FIND '\n' at end of array
+        printf("\n%d %s\n", max, longest); // %s MUST FIND '\n' at end of array
     return 0;
 }
 
@@ -28,8 +28,7 @@ int linelength(char s[], int lim)
     for(i = 0; i < lim -1 && (c = getchar()) != EOF && c != '\n'; ++i) // check line isn't over lim length
         s[i] = c;
     if(c == '\n') {
-        s[i] = c;
-        ++i;
+        s[i++] = c; // increment i after it is used :)
     }
     // s[i] = '\0'; // WORKS FINE WITHOUT THIS????
     return i;
@@ -39,5 +38,5 @@ void copy(char to[], char from[])
 {
     int i = 0;
     while((to[i] = from[i]) != '\0')
-        ++i;
+      ++i;
 }
