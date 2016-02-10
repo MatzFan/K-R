@@ -1,7 +1,7 @@
-#define NUMBER  '0'
+#define NUMBER  '0' // char constant
 
 void push(double);
 double pop(void);
-int getop(char []);
+char getop(char []);
 int getch(void);
 void ungetch(int);

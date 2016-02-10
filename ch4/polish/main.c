@@ -6,7 +6,7 @@
 
 int main()
 {
-  int type;
+  char type; // changed from int in K&R..
   double temp;
   char s[MAXOP];
 

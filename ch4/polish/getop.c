@@ -2,11 +2,13 @@
 #include <ctype.h>
 #include "calc.h"
 
-int getop(char s[])
+/* changes s[] IN PLACE to a strign represenastion of a float */
+/* returns either NUMBER if s[] contains a number */
+char getop(char s[])
 {
     #define PERIOD  '.'
     int i = 0;
-    int c;
+    char c;
     int next;
 
     while((s[0] = c = getch()) == ' ' || c == '\t') // skip leading whitespace
