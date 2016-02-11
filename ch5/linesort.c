@@ -2,48 +2,54 @@
 #include <string.h>
 #include "qsort.h"
 
-#define MAXLINES  5000
+#define MAXLINES  500
+#define MAXSTORE  10000// storage for all lines
 
-char *lineptr[MAXLINES];
+char *lineptr[MAXLINES]; // POINTER TO EACH TEXT LINE
 
-int readlines(char *lineptr[], int nlines);
+int readlines(char *lineptr[], int nlines, char linestore[]);
 void writelines(char *lineptr[], int nlines);
-
-// void qsort(char *lineptr[], int left, int right);
 
 int main()
 {
 	int nlines;
+	char linestore[MAXSTORE];
 
-	if((nlines = readlines(lineptr, MAXLINES)) >= 0) {
+	if((nlines = readlines(lineptr, MAXLINES, linestore)) >= 0) {
 		qsort_(lineptr, 0, nlines - 1);
 		printf("\n");
 		writelines(lineptr, nlines);
 		return 0;
-	} else {
-		printf("error: input exceeds limit of %d lines\n", MAXLINES);
-		return 1;
 	}
+	else
+		return 1;
 }
 
 #define	MAXLEN	1000 // scope from here down
 
 int getaline(char *, int);
-char *alloc(int);
+// char *alloc(int);
 
-int readlines(char *lineptr[], int maxlines)
+int readlines(char *lineptr[], int maxlines, char *ls)
 {
 	int len, nlines;
-	char *p, line[MAXLEN];
-
+	char *p; // p is pointer to ls - the array defining max storage for all lines
+	char line[MAXLEN];
 	nlines = 0;
-	while((len = getaline(line, MAXLEN)) > 0)
-		if(nlines >= maxlines || (p = alloc(len)) == NULL)
-			return -1;
-		else {
+	p = ls + strlen(ls); // first call initializes p to address of ls[0], as ls has zero length
+	while((len = getaline(line, MAXLEN)) > 0) // len is the line length
+		if((strlen(ls) + len) > MAXSTORE) {
+        	printf("error: input exceeds line storage of %d characters\n", MAXSTORE);
+        	return 1;
+        }
+		else if(nlines >= maxlines) {
+			printf("error: input exceeds limit of %d lines\n", MAXLINES);
+        	return 1;
+		} else {
 			line[len -1] = '\0'; // delete the newline '\n'
-			strcpy(p, line);
+			strcpy(p, line); // BECAUSE p POINTS TO ADDRESS IN ls[0], THIS COPIES EACH LINE IN TURN INTO ls
 			lineptr[nlines++] = p;
+			p += len; // increment p to next free postion
 		}
 	return nlines;
 }
@@ -52,8 +58,8 @@ void writelines(char *lineptr[], int nlines)
 {
 	int i;
 
-	for(i = 0; i < nlines; i++)
-		printf("%s\n", lineptr[i]);
+	while(nlines-- > 0) // de-increment nlines while there is a line
+		printf("%s\n", *lineptr++); // increment array pointer & print char[] at that address
 }
 
 int getaline(char s[], int lim) // returns line length from stdin input
@@ -69,16 +75,16 @@ int getaline(char s[], int lim) // returns line length from stdin input
 	return i;
 }
 
-#define ALLOCSIZE	10000
+// #define ALLOCSIZE	10000
 
-static char allocbuf[ALLOCSIZE];
-static char *allocp = allocbuf;
+// static char allocbuf[ALLOCSIZE];
+// static char *allocp = allocbuf;
 
-char *alloc(int n) // p101
-{
-	if(allocbuf + ALLOCSIZE - allocp >= n) {
-		allocp += n;
-		return allocp - n; // old p
-	} else // not enough room in buffer
-		return 0;
-}
+// char *alloc(int n) // p101
+// {
+// 	if(allocbuf + ALLOCSIZE - allocp >= n) {
+// 		allocp += n;
+// 		return allocp - n; // old p
+// 	} else // not enough room in buffer
+// 		return 0;
+// }
